@@ -40,8 +40,13 @@ export class RegisterComponent {
     this.usuarioService.crearUsuario( this.registerForm.value )
         .subscribe( resp => {
           
-          // Navegar al Dashboard
-          this.router.navigateByUrl('/');
+          // Navegar al Login
+          this.router.navigateByUrl('/login');
+          Swal.fire({
+            icon: 'success',
+            title: 'Genial..!!',
+            text: 'Registro correcto... Ahora inicia sección.'
+          });
 
         }, (err) => {
           // Si sucede un error

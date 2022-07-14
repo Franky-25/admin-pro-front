@@ -6,14 +6,13 @@ import { Observable, of } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
-
-
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
 
+declare const google: any;
+
 const base_url = environment.base_url;
 
-declare const gapi: any;
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +32,8 @@ export class UsuarioService {
   googleInit() {
 
     return new Promise( resolve => {
-      gapi.load('auth2', () => {
-        this.auth2 = gapi.auth2.init({
+      google.load('auth2', () => {
+        this.auth2 = google.auth2.init({
           client_id: '1045072534136-oqkjcjvo449uls0bttgvl3aejelh22f5.apps.googleusercontent.com',
           cookiepolicy: 'single_host_origin',
         });
@@ -48,10 +47,14 @@ export class UsuarioService {
   logout() {
     localStorage.removeItem('token');
 
+    google.accounts.id.revoke('pimpollo2510@gmail.com',() => {
+      this.router.navigateByUrl('/login')
+    })
+
     this.auth2.signOut().then(() => {
 
       this.ngZone.run(() => {
-        this.router.navigateByUrl('/login');
+        // this.router.navigateByUrl('/login');
       })
     });
 
